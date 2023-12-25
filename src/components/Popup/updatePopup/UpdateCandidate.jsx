@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTitle, Grid, Paper, Box } from "@mui/material";
+import { Dialog, DialogContent, DialogTitle, Grid, Paper, Box, IconButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as yup from "yup";
@@ -17,6 +17,7 @@ import { getGroupId } from "context/redux/action/action";
 import { getCandidatebyId } from "context/redux/action/action";
 import ButtonLangding from "assets/theme/components/button/ButtonLangding";
 import { handleGetCandidateByIdCampaign } from "context/redux/action/action";
+import CloseIcon from "@mui/icons-material/Close";
 const schema = yup.object().shape({});
 
 const getIcon = (name) => <Iconify icon={name} width={22} height={22} />;
@@ -127,9 +128,9 @@ export default function UpdateCandidate(props) {
             message: "Chỉnh sửa thông tin thành công",
             type: "SUCCESS",
           });
-          handleClose();
-          await dispatch(handleGetCandidateByIdCampaign(token, id));
         }
+        await dispatch(handleGetCandidateByIdCampaign(token, idCampaign));
+        handleClose();
       } catch (error) {
         if (error.response.data.statusCode === 404) {
           CustomizedToast({
@@ -158,12 +159,18 @@ export default function UpdateCandidate(props) {
       <Paper>
         <Dialog maxWidth="md" open={OpenEditCandidate} onClose={handleClose}>
           <DialogTitle>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <IconButton style={{ color: "#D44FAC" }} onClick={handleClose}>
+                <CloseIcon />
+              </IconButton>
+            </div>
             <PageHeader
               title="Chỉnh sửa thông tin ứng cử viên"
               subTitle="Cập nhật thông tin ứng cử viên"
               icon={getIcon("akar-icons:edit")}
             />
           </DialogTitle>
+
           <DialogContent>
             <form onSubmit={formik.handleSubmit}>
               <Box
